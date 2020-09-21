@@ -1,0 +1,45 @@
+<head>
+    
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+   
+   
+</head>
+<body>
+    {% extends "accounts/base.html" %}
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'polls/style.css' %}">
+
+    {% block content %}
+    {% if user.is_authenticated %}
+    <p>Welcome, {{ user.username }}. Thanks for logging in.</p>
+    {% if latest_question_list %}
+    <ul>
+        {% for question in latest_question_list %}
+        <!--
+        """下はハードコードされたコード("/polls/"の所)->pollsの後に必ず入る->階層変わった際の変化できない
+        <li><a class="btn btn-primary" href="/polls/{{ question.id }}/">{{ question.question_text }}</a></li>
+        -->
+        
+        <!--polls:detailでpollsという名前空間(pollsのurl.pyでapp_nameで指定)のdetailを指定-->
+        <li><a class="btn btn-primary" href="{% url 'polls:detail' question.id %}">{{ question.question_text }}</a></li>
+        {% endfor %}
+    </ul>
+    {% else %}
+        <p>No polls are available.</p>
+    {% endif %}
+    {%else%}
+        <a class="btn btn-primary" href="{% url 'accounts:login' %}">ログイン</a>
+    {% endif %}
+    <div>
+        <img src="../../static/polls/images/days_res.png" class="rounded float-left">
+    </div>
+    <p>セッション表示テスト</p>
+    username：{{ request.session.username }}<br>
+    <a class="btn btn-primary" href="{% url 'accounts:index' %}">メニュー??</a>
+
+    {% endblock %}    
+
+</body>

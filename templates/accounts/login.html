@@ -1,0 +1,27 @@
+{% extends "accounts/base.html" %}
+{% block content %}
+<form action="" method="POST">
+    <div class="col-md-6 offset-md-3">
+        <div class="card">
+            <div class="card-body">
+                    <!--テンプレートタグのfor文でformオブジェクトから要素をひとつずつfield変数に格納-->
+                    <!--{{field}}でフォームを表示-->
+                    {% for field in form %}
+                    {{ field }}
+                     <hr>
+        　　        {% endfor %}
+                    <!--form.non_field_errorsで認証時エラーを取得できる-->
+          　　　　  {% for error in form.non_field_errors %}
+                  <div class="alert alert-danger" role="alert">
+                      <!--赤枠でerrorが表示される-->
+                       <p>{{ error }}</p>
+                  </div>
+　　　　　　　       {% endfor %}
+                <button type="submit" class="btn btn-success btn-lg btn-block" >ログイン</button>
+                <input type="hidden" name="next" value="{{ next }}" />
+                {% csrf_token %}
+            </div>
+        </div>
+    </div>
+</form>
+{% endblock %}

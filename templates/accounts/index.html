@@ -1,0 +1,12 @@
+{% extends "accounts/base.html" %}
+{% block content %}
+{% if user.is_authenticated %}
+ログオンしました。
+<p>セッション表示テスト</p>
+    username：{{ request.session.username }}<br>
+<a class="btn btn-primary" href="{% url 'polls:index' %}">投票サイト??</a>
+<a class="btn btn-primary" href="{% url 'ocero:index' %}">オセロ??</a>
+{%else%}
+        <a class="btn btn-primary" href="{% url 'accounts:login' %}">ログイン</a>
+{% endif %}
+{% endblock %}

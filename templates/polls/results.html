@@ -1,0 +1,46 @@
+
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+</head>
+<body>
+    {% extends "accounts/base.html" %}
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'polls/style.css' %}">
+    {% block content %}
+    <main role="main" class="container">
+        <div class="starter-template">
+            <!--テンプレートシステムは、変数の属性にアクセスするためにドット検索の構文を使用-->
+            <h1 class="mt-5">{{ question.question_text }}</h1>
+        </div>
+    </main>
+    <!--ブロック分け-->
+    <div class="container" >
+        <div class="row mb-3"><!--bootstrap-->
+            {% for choice in question.choice_set.all %}
+            <!--radioボタンとその中身-->
+            <div class="container themed-container">
+                <div class="row mb-3">
+                    <div class="col-4 themed-grid-col">{{ choice.choice_text }}</div>
+                    <div class="col-4 themed-grid-col">------</div>
+                    <div class="col-4 themed-grid-col">{{choice.votes}} vote{{choice.votes|pluralize}}</div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <a class="btn btn-primary" href="{% url 'polls:detail' question.id %}">Vote again??</a>
+        <a class="btn btn-primary" href="{% url 'polls:index' %}">目次に戻る??</a>
+    </div>
+    <!--
+    <li><a class="btn btn-primary" href="/polls/{{ question.id }}/">{{ question.question_text }}</a></li>
+    -->
+    <p>セッション表示テスト</p>
+    username：{{ request.session.username }}<br>
+    <div>
+        <img src="../../static/polls/images/days_res.png" class="rounded float-left">
+    </div> 
+    {% endblock %}
+</body>
