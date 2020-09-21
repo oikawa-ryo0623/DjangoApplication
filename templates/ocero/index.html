@@ -19,45 +19,58 @@
             <div class="col-4"></div>
         </div>
     </div>
-    <div class="container" >
-        <div class="row">
-        <div class="col-md-2 col-md-offset-1"></div>
-        {% for col in field%}
-                <div class="col-md-1">
-                    {%if col.state == 1%}
-                        <p> ○ </p>
-                    {%elif col.state == 2%}
-                        <p> × </p>
-                    {%else%}
-                        <p>{{ col.state }}</p>
-                    {%endif%}
-                </div>    
-        {% endfor %}  
-    </div> 
-    </div>
-
-    <div class="container" >
-        
-        <div class="col mb-3">
-            {% for field_1 in field_list %}
-            <div class="row mb-3">
-                {% for field in field_1 %}
-                <div class="col mb-3">
-                    <li><a class="btn btn-primary" href="{% url 'ocero:index'%}">{{ field }}</a></li>
-                </div> 
-                {% endfor %}
-            </div>  
-            {% endfor %}
-            
-        </div>  
-    </div>
-    
     <form action="{%url 'ocero:change'%}" method ="POST">
         {% csrf_token %}
-        {% for col in field %}
-        <input type="submit" class="btn btn-primary" name="{{col.x}} {{col.y}}" value="{{col.x}} {{col.y}}">
-        {% endfor %}
+    <div class="container" >
+        <div class="row">
+            {% for fild in field %}
+            <div class="col-md-2 col-md-offset-1"></div>
+            {% for fd in fild %}
+                <div class="col-md-1">
+                    
+                    {%if fd.state == 1%}
+                        <input type="submit" class="btn btn-primary" name="{{fd.x}} {{fd.y}}" value="●">
+                    {%elif fd.state == -1%}
+                        <input type="submit" class="btn btn-primary" name="{{fd.x}} {{fd.y}}" value="〇">
+                    {%elif fd.state == 2%}
+                        <input type="submit" class="btn btn-primary text-success" name="{{fd.x}} {{fd.y}}" value="★">
+                    {%else%}
+                        <input type="submit" class="btn text-danger" name="{{fd.x}} {{fd.y}}" value="×">
+                    {%endif%}
+                </div>    
+            {% endfor %}  
+            <div class="col-md-2 col-md-offset-1"></div>
+            {% endfor %} 
+        </div> 
+    </div>
     </form>
+
+    <div class="container" >
+        <div class="row">
+            <p>Black : {{black}} , White : {{white}}</p>
+        </div>
+        <div class="row">
+            {%if judge >= 2%}
+                {% if black > white %}
+                <p>Black の勝ち</p>
+                {% elif black == white %}
+                <p>引き分け</p>
+                {% else %}
+                <p>White の勝ち</p>
+                {% endif %}
+            {%else%}
+                {% if putbool %}
+                    <form action="{%url 'ocero:onceindex'%}" method ="POST">
+                        {% csrf_token %}
+                        <div class="container" >
+                            <input type="submit" class="btn btn-primary" name="1" value="●">
+                        </div>
+                    </form>
+                {%endif%}
+            {% endif %}
+        </div>
+    </div>
+
     
     <a class="btn btn-primary" href="{% url 'accounts:index' %}">メニュー??</a>
     {% endblock %}   
